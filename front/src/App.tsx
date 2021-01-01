@@ -1,5 +1,4 @@
 import './css/App.css';
-import { ReactNode } from 'react'
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,14 +9,22 @@ import { AuthorCheck } from './authorcheck/AuthorCheck'
 import Profile from './pages/profile';
 import Login from './pages/login';
 import Admin from './pages/admin';
-import { User } from './global';
+import { authorType, User } from './global';
+import { connect } from 'react-redux';
 
+
+// 建立 AuthorCheck 容器组件
+let mapStatesToProps = (state: any) => {
+  return {
+    user: state.user,
+  }
+}
+let ACKContainer = connect(mapStatesToProps)(AuthorCheck)
 
 
 interface props {
   user: User
 }
-
 
 function App(props: props) {
   console.log(props);
@@ -26,13 +33,30 @@ function App(props: props) {
     <div>
       <Router>
         <Switch>
-          <Route path="/profile" component={Profile} />
-          <Route path="/admin" component={Admin} />
-          <Route path="/" component={Login} />
+
+          <Route path="/profile" >
+            <ACKContainer
+              author={authorType.students} defult='/'>
+              <Profile />
+            </ACKContainer>
+          </Route>
+
+          <Route path="/admin" >
+            <ACKContainer
+              author={authorType.admin} defult='/'>
+              <Admin />
+            </ACKContainer>
+          </Route>
+
+          <Route path="/" >
+            <Login></Login>
+          </Route>
+
         </Switch>
       </Router>
     </div>
   );
 }
+
 
 export default App;

@@ -1,23 +1,30 @@
 import { ReactNode } from 'react';
 import { authorType, User } from '../global'
+import { Redirect } from 'react-router'
 
 
 
 
 interface props {
     author: authorType,
-    defult: ReactNode,
+    defult: string,
     user: User
     children: ReactNode[] | ReactNode
-
 }
 
-function AuthorCheck(props: props) {
+
+function AuthorCheck(props: props): JSX.Element {
     if (props.author !== check(props.user)) {
-        return (props.defult)
-    } else {
-        return props.children
+        return (
+            <Redirect to={props.defult}></Redirect>
+
+        )
     }
+    return (
+        <>
+            { props.children}
+        </>
+    )
 }
 
 

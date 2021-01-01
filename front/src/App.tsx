@@ -11,6 +11,7 @@ import Login from './pages/login';
 import Admin from './pages/admin';
 import { authorType, User } from './global';
 import { connect } from 'react-redux';
+import { Action } from 'redux';
 
 
 // 建立 AuthorCheck 容器组件
@@ -24,13 +25,14 @@ let ACKContainer = connect(mapStatesToProps)(AuthorCheck)
 
 interface props {
   user: User
+  dispatch: (arg: Action) => void
 }
 
 function App(props: props) {
-  console.log(props);
+  console.log("APP:", props);
 
   return (
-    <div>
+    <div className='APP'>
       <Router>
         <Switch>
 
@@ -49,7 +51,7 @@ function App(props: props) {
           </Route>
 
           <Route path="/" >
-            <Login></Login>
+            <Login user={props.user} dispatch={props.dispatch}></Login>
           </Route>
 
         </Switch>

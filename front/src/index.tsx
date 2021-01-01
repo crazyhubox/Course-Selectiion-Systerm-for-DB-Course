@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider, connect } from 'react-redux'
-import { createStore, Action } from 'redux'
+import { createStore } from 'redux'
 
 import './css/index.css';
 import 'antd/dist/antd.css';

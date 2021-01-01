@@ -1,6 +1,5 @@
-import { type } from 'os';
-import React, { ReactNode } from 'react';
-import { authorType, User } from './global'
+import { ReactNode } from 'react';
+import { authorType, User } from '../global'
 
 
 

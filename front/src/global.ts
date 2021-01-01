@@ -9,7 +9,6 @@ class User {
             this.token = this.getToken(username, password)
         }
     }
-
     getToken(username: string, password: string): string {
         return "test"
     }

@@ -1,24 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './css/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-interface props {
-
-}
-
-function Test(props: props) {
-  return (<div>hhh</div>)
-}
 
 
 ReactDOM.render(
   <React.StrictMode>
-    <App name={"heo"}>
-      <Test />
-
-    </App>
+    <App
+    />
   </React.StrictMode>,
   document.getElementById('root')
 );

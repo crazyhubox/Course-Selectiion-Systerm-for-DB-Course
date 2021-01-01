@@ -10,16 +10,18 @@ import { AuthorCheck } from './authorcheck/AuthorCheck'
 import Profile from './pages/profile';
 import Login from './pages/login';
 import Admin from './pages/admin';
+import { User } from './global';
 
 
 
-// interface props {
-//   name: string
-//   children: ReactNode[] | ReactNode
-// }
+interface props {
+  user: User
+}
 
 
-function App() {
+function App(props: props) {
+  console.log(props);
+
   return (
     <div>
       <Router>

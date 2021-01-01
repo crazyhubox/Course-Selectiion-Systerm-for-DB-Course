@@ -1,3 +1,4 @@
+
 enum authorType { admin, students, guest }
 
 class User {
@@ -15,4 +16,9 @@ class User {
 
 }
 
+interface State {
+    user: User
+}
+
 export { authorType, User }
+export type { State } 

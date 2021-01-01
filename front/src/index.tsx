@@ -4,9 +4,21 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+interface props {
+
+}
+
+function Test(props: props) {
+  return (<div>hhh</div>)
+}
+
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App name={"heo"}>
+      <Test />
+
+    </App>
   </React.StrictMode>,
   document.getElementById('root')
 );

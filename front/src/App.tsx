@@ -3,6 +3,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Link,
 } from "react-router-dom";
 import { AuthorCheck } from './authorcheck/AuthorCheck'
 
@@ -13,14 +14,6 @@ import { authorType, User } from './global';
 import { connect } from 'react-redux';
 import { Action } from 'redux';
 
-
-// 建立 AuthorCheck 容器组件
-let mapStatesToProps = (state: any) => {
-  return {
-    user: state.user,
-  }
-}
-let ACKContainer = connect(mapStatesToProps)(AuthorCheck)
 
 
 interface props {
@@ -39,7 +32,7 @@ function App(props: props) {
           <Route path="/profile" >
             <ACKContainer
               author={authorType.students} defult='/'>
-              <Profile />
+              <ProfileContainer />
             </ACKContainer>
           </Route>
 
@@ -51,14 +44,59 @@ function App(props: props) {
           </Route>
 
           <Route path="/" >
-            <Login user={props.user} dispatch={props.dispatch}></Login>
+            <LoginContainer></LoginContainer>
           </Route>
 
         </Switch>
+
+        {/* 用于实现 js 自主通过 router 跳转的 连接 */}
+        <Link to='/profile' id='to/profile' ></Link>
+        <Link to='/admin' id='to/admin' ></Link>
+
+
       </Router>
+
     </div>
   );
 }
+
+
+// 定义容器
+
+//AuthorCheck 
+let ACKContainer = connect(
+  (state: any) => ({ user: state.user })
+)(AuthorCheck)
+
+let LoginContainer = connect(
+  (state: any) => {
+    return ({
+      user: state.user,
+      dispatch: state.dispatch,
+      history: state.history
+
+    })
+  }
+)(Login)
+
+let ProfileContainer = connect(
+  (state: any) => ({
+    student: state.student,
+    courseFinish: state.courseFinish,
+    courseUnfinish: state.courseUnfinish,
+  })
+)(Profile)
+
+let AdminContainer = connect(
+  (state: any) => {
+    return ({
+      student: state.student,
+      courseFinish: state.courseFinish,
+      courseUnfinish: state.courseUnfinish,
+    })
+  }
+)(Admin)
+
 
 
 export default App;

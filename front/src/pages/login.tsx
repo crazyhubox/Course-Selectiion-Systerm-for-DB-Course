@@ -6,38 +6,57 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import '../css/login.css'
 import { authorType, User } from '../global';
 import { AnyAction } from 'redux';
+import { Link, Redirect, Route, Router } from 'react-router-dom';
 
 interface props {
     user: User
     dispatch: (arg: AnyAction) => void
+    history: any
 }
 
 const Login = (props: props) => {
 
+    //  输入结束，点击登录
     const onFinish = (values: string) => {
 
+
+        // 解释传入参数
         interface temp {
             username: string
             password: string
         }
         let json = values as unknown as temp
 
+
+        // 创建 action ，传出更新数据
         let action = {
             type: 'newUser',
             user: new User(json.username, json.password)
         }
 
+        console.log("login:", action, props);
+
         props.dispatch(action)
 
-        if (action.user.token === 'guess') {
-            alert("账号或密码错误，请重新输入！")
-            window.location.reload()
-        } else if (action.user.author === authorType.admin) {
 
-            window.location.href = 'http://' + window.location.host + '/admin'
+        // 页面跳转
+        if (action.user.author === authorType.admin) {
+
+            //  history 没有传入，目前还不知道是否有更加适当的方法
+            //  用来完成页面跳转
+            let link = document.getElementById('to/admin')
+            console.log("logn link：", link);
+            if (link !== null) {
+                link.click()
+            }
+
         } else if (action.user.author === authorType.students) {
 
-            window.location.href = 'http://' + window.location.host + '/profile'
+            let link = document.getElementById('to/profile')
+            console.log("logn link：", link);
+            if (link !== null) {
+                link.click()
+            }
         } else {
             alert("账号或密码错误，请重新输入！")
             window.location.reload()
@@ -54,6 +73,7 @@ const Login = (props: props) => {
             onFinish={onFinish}
         >
             <h1>Login</h1>
+            <Link to='/profile' >hhh</Link>
             <Form.Item
                 name="username"
                 rules={[{ required: true, message: 'Please input your Username!' }]}
@@ -70,17 +90,6 @@ const Login = (props: props) => {
                     placeholder="Password"
                 />
             </Form.Item>
-            {/* <Form.Item>
-                <Form.Item name="remember" valuePropName="checked" noStyle>
-                    <Checkbox>Remember me</Checkbox>
-                </Form.Item>
-
-                <a className="login-form-forgot" href="">
-                    Forgot password
-        </a>
-
-            </Form.Item> */}
-
             <Form.Item>
                 <Button type="primary" htmlType="submit" className="login-form-button">
                     Log in

@@ -1,3 +1,5 @@
+// 全局类型
+
 
 enum authorType { admin, students, guest }
 
@@ -8,7 +10,7 @@ class User {
 
     constructor(username?: string, password?: string) {
         if (username !== undefined && password !== undefined) {
-            this.name = "username"
+            this.name = username
             let temp = this.getToken(username, password)
             this.token = temp.token
             this.author = temp.author
@@ -25,9 +27,68 @@ class User {
     }
 }
 
-interface State {
-    user: User
+
+
+
+
+class Student {
+    sno: string
+    sname: string
+    sex: string
+    age: string
+    sdept: string
+    logn: string
+    pswd: string
+    constructor(agrs: { sno: string, sname: string, sex: string, age: string, sdept: string, logn: string, pswd: string }) {
+        this.sno = agrs.sno
+        this.sname = agrs.sname
+        this.sex = agrs.sex
+        this.age = agrs.age
+        this.sdept = agrs.sdept
+        this.logn = agrs.logn
+        this.pswd = agrs.pswd
+    }
 }
 
-export { authorType, User }
-export type { State } 
+
+class Course {
+    cno: string
+    cname: string
+    credit: number
+    cdept: string
+    tname: string
+    grade: number = -1
+    choosed: boolean = false
+
+    constructor(arg: { cno: string, cname: string, credit: number, cdept: string, tname: string, grade?: number }) {
+        this.cno = arg.cno
+        this.cname = arg.cname
+        this.credit = arg.credit
+        this.cdept = arg.cdept
+        this.tname = arg.tname
+
+        if (this.grade !== undefined) {
+            this.grade = arg.grade as number
+        }
+    }
+}
+
+
+//  全局函数 
+
+function name(params: string) {
+
+    // if (location.state && location.state.params) {//判断当前有参数
+    //     recvParam = location.state.params;
+    //     sessionStorage.setItem('data', recvParam);// 存入到sessionStorage中
+    // } else {
+    //     recvParam = sessionStorage.getItem('data');// 当state没有参数时，取sessionStorage中的参数
+    // }
+}
+
+
+
+
+
+
+export { authorType, User, Student, Course }

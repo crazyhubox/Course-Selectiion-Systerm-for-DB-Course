@@ -1,10 +1,10 @@
 import { AnyAction } from 'redux'
-import { User } from '../global'
+import initState from '../testData'
+
 
 // 初始化数据
-let initState = {
-    user: new User()
-}
+console.log("init state:", initState);
+
 
 // 数据更新器
 class Reducer {
@@ -25,19 +25,26 @@ class Reducer {
 class EditUser extends Reducer {
     newUser = (state: any, action: AnyAction) => {
         console.log("Action:", action);
-
         state.user = action.user
     }
 }
 
 
 // 数据更新器调用函数
-export default function mainReducer(state: any = initState, action: AnyAction) {
+export default function mainReducer(state: any, action: AnyAction) {
+    console.log("main reducer:", state);
+
+    if (state == undefined) {
+        console.log("main reducer:", "state not defined");
+        state = initState
+    }
     let newState = Object.assign({}, state)
 
     // 调用 数据更新器
     const editUser = new EditUser();
-    editUser.exec(state, action)
+    editUser.exec(newState, action)
+
+    console.log("After main reducer:", newState);
     return newState
 }
 

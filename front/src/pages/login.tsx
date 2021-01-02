@@ -1,17 +1,16 @@
 import React from 'react';
 
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 import '../css/login.css'
 import { authorType, User } from '../global';
 import { AnyAction } from 'redux';
-import { Link, Redirect, Route, Router } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 interface props {
     user: User
     dispatch: (arg: AnyAction) => void
-    history: any
 }
 
 const Login = (props: props) => {
@@ -58,8 +57,7 @@ const Login = (props: props) => {
                 link.click()
             }
         } else {
-            alert("账号或密码错误，请重新输入！")
-            window.location.reload()
+            message.error("账号或密码错误，请重新输入！")
         }
     };
 
@@ -73,7 +71,6 @@ const Login = (props: props) => {
             onFinish={onFinish}
         >
             <h1>Login</h1>
-            <Link to='/profile' >hhh</Link>
             <Form.Item
                 name="username"
                 rules={[{ required: true, message: 'Please input your Username!' }]}

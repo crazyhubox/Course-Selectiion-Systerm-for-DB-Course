@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import { AuthorCheck } from './authorcheck/AuthorCheck'
 
-import Profile from './pages/profile';
+import Profile from './pages/Profile';
 import Login from './pages/login';
 import Admin from './pages/admin';
 import { authorType, User } from './global';
@@ -73,8 +73,6 @@ let LoginContainer = connect(
     return ({
       user: state.user,
       dispatch: state.dispatch,
-      history: state.history
-
     })
   }
 )(Login)

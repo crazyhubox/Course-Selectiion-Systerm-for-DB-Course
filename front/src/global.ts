@@ -38,15 +38,13 @@ class Student {
     age: string
     sdept: string
     logn: string
-    pswd: string
-    constructor(agrs: { sno: string, sname: string, sex: string, age: string, sdept: string, logn: string, pswd: string }) {
+    constructor(agrs: { sno: string, sname: string, sex: string, age: string, sdept: string, logn: string }) {
         this.sno = agrs.sno
         this.sname = agrs.sname
         this.sex = agrs.sex
         this.age = agrs.age
         this.sdept = agrs.sdept
         this.logn = agrs.logn
-        this.pswd = agrs.pswd
     }
 }
 
@@ -71,20 +69,25 @@ class Course {
             this.grade = arg.grade as number
         }
     }
+
+    public search(key: string) {
+        if (this.cdept.indexOf(key) !== -1) {
+            return true
+        } else if (this.cname.indexOf(key) !== -1) {
+            return true
+        } else if (this.cno.indexOf(key) !== -1) {
+            return true
+        } else if (this.tname.indexOf(key) !== -1) {
+            return true
+        } else {
+            return false
+        }
+    }
+
 }
 
 
-//  全局函数 
 
-function name(params: string) {
-
-    // if (location.state && location.state.params) {//判断当前有参数
-    //     recvParam = location.state.params;
-    //     sessionStorage.setItem('data', recvParam);// 存入到sessionStorage中
-    // } else {
-    //     recvParam = sessionStorage.getItem('data');// 当state没有参数时，取sessionStorage中的参数
-    // }
-}
 
 
 

@@ -19,7 +19,6 @@ let mapStatesToProps = (state: any) => {
     user: state.user,
   }
 }
-
 let AppContainer = connect(mapStatesToProps)(App)
 
 

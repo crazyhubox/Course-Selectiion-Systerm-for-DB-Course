@@ -1,7 +1,7 @@
 import { User, Student, Course } from './global'
 
 let STDInfo = {
-    sno: '2481', sname: 'lin', sex: 'male', age: '18', sdept: '计科', logn: 'lin', pswd: '2481'
+    sno: '2481', sname: 'lin', sex: 'male', age: '18', sdept: '计科', logn: 'lin'
 }
 let student = new Student(STDInfo)
 let courseFinish: Course[] = []
@@ -15,7 +15,11 @@ courseUnfinish.push(new Course({
     cno: '08305002', cname: '数据库原理', credit: 4, cdept: '计算机学院', tname: '马小红'
 }))
 
+courseUnfinish.push(new Course({
+    cno: '08305003', cname: '编译原理', credit: 4, cdept: '计算机学院', tname: '马小黄'
+}))
 
+courseUnfinish[1].choosed = true
 
 let initState = {
     user: new User(),

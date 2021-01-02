@@ -3,3 +3,41 @@
     height: 100vh;
     background-color: rgba(255, 255, 255, 0.884);
 }
+
+.ant-card-body p {
+    text-align: left;
+    max-height: 100px;
+}
+
+.ant-card-meta {
+    padding-bottom: 20px;
+}
+
+.CourseMainBox {
+    padding: 2% 10px;
+    height: 100%;
+}
+
+.CourseList {
+    height: 48%;
+    text-align: left;
+}
+
+.CourseList h3 {
+    text-align: left;
+}
+
+
+.ant-input-group-wrapper {
+    width: fit-content;
+    margin: 0 5vw 0 0;
+}
+
+.ant-table-wrapper {
+    height: max-content;
+
+}
+
+.ant-table-tbody {
+    height: max-content;
+}

@@ -18,27 +18,17 @@ interface CourseProps {
 function CourseList(props: CourseProps) {
     console.log("CourseProps:", props);
 
-
     // state 
     const [searchOn, setSearchOn] = useState(false);
     const [searchKeyWold, setSearchKeyWold] = useState('');
 
-    const [courseChoosed, setCourseChoosed] = useState(props.courses.filter(item => item.choosed))
 
-
-    const [courseUnChoosed, setCourseUnChoosed] = useState(
-        props.courses.filter(item => {
-
-            if (searchOn) {
-                return (item.search(searchKeyWold) && (!item.choosed))
-            } else {
-
-                return (!item.choosed)
-            }
-
-        })
-    )
+    let courseChoosed = props.courses.filter(item => item.choosed)
+    let courseUnChoosed = props.courses.filter(item => !item.choosed)
     // 执行搜索,获取搜索之后的数组
+    if (searchOn) {
+        courseUnChoosed = courseUnChoosed.filter(item => item.search(searchKeyWold))
+    }
 
 
 
@@ -67,7 +57,6 @@ function CourseList(props: CourseProps) {
             type = 'select'
         } else {
             type = 'unSelect'
-
         }
 
         const action = {

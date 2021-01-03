@@ -39,7 +39,7 @@ function App(props: props) {
           <Route path="/admin" >
             <ACKContainer
               author={authorType.admin} defult='/'>
-              <Admin />
+              <AdminContainer />
             </ACKContainer>
           </Route>
 

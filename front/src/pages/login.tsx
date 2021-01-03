@@ -6,7 +6,6 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import '../css/login.css'
 import { authorType, User } from '../global';
 import { AnyAction } from 'redux';
-import { Link } from 'react-router-dom';
 
 interface props {
     user: User

@@ -1,5 +1,4 @@
 import { AnyAction } from 'redux'
-import { Course } from '../global';
 import initState from '../testData'
 
 

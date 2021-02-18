@@ -1,12 +1,12 @@
 body {
   text-align: center;
-
+  background-color: rgb(240, 242, 245);
 }
 
 #root {
   margin: 0 auto;
   position: relative;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 code {

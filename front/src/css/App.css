@@ -1,8 +1,5 @@
 .APP {
   position: relative;
   text-align: center;
-  height: 100vh;
-  /* left: 50%; */
-  /* top: 50%;
-  transform: translate(0%, -50%); */
+  min-height: 100vh;
 }

@@ -9,7 +9,7 @@ import { AuthorCheck } from './authorcheck/AuthorCheck'
 
 import Profile from './pages/Profile';
 import Login from './pages/login';
-import Admin from './pages/admin';
+import Admin from './pages/Admin';
 import { authorType, User } from './global';
 import { connect } from 'react-redux';
 import { Action } from 'redux';

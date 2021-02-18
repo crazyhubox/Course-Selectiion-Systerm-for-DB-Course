@@ -3,7 +3,7 @@ import React from 'react';
 import { Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
-import '../css/login.css'
+import '../css/login.scss'
 import { authorType, User } from '../global';
 import { AnyAction } from 'redux';
 

@@ -88,10 +88,34 @@ class Course {
 
 
 
+// bind student with his grade in specific course
+class StudentWithGrade {
+    student: Student
+    grade: number
+
+    constructor(agrs: { sno: string, sname: string, sex: string, age: string, sdept: string, logn: string }, grade: number) {
+        this.student = new Student(agrs);
+        this.grade = grade
+    }
+}
+
+// Clear who are in the course 
+class CourseWithStudents {
+    course: Course
+    students: StudentWithGrade[]
+    constructor(args: { cno: string, cname: string, credit: number, cdept: string, tname: string, grade?: number }) {
+        this.course = new Course(args)
+        this.students = []
+    }
+
+    addStudent(args: { sno: string, sname: string, sex: string, age: string, sdept: string, logn: string }, grade: number) {
+        this.students.push(new StudentWithGrade(args, grade))
+    }
+}
 
 
 
 
 
 
-export { authorType, User, Student, Course }
+export { authorType, User, Student, Course, StudentWithGrade, CourseWithStudents }

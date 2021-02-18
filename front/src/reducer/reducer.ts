@@ -15,7 +15,6 @@ class Reducer {
         if (!(type in this)) {
             return state
         }
-
         return this[type](state, action)
     }
     push = function (this: any, child: Reducer) {

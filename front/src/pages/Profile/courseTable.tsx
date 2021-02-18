@@ -55,14 +55,18 @@ function CourseTable(props: any) {
 
 
     return (
-        <>
+        <div className="CourseTable" >
             <Table<Course> size='small' columns={columns}
                 rowSelection={rowSelection}
                 rowKey={record => record.cno}
                 footer={() => '共' + props.course.length + '门课'}
+                pagination={{
+                    size: "small",
+                    pageSize: 8
+                }}
                 dataSource={props.course} />
             <Button onClick={onConfirm} >{props.confirm}</Button>
-        </>
+        </div>
     )
 }
 

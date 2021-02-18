@@ -25,6 +25,7 @@ function CourseList(props: CourseProps) {
 
     let courseChoosed = props.courses.filter(item => item.choosed)
     let courseUnChoosed = props.courses.filter(item => !item.choosed)
+
     // 执行搜索,获取搜索之后的数组
     if (searchOn) {
         courseUnChoosed = courseUnChoosed.filter(item => item.search(searchKeyWold))
@@ -69,8 +70,8 @@ function CourseList(props: CourseProps) {
     }
 
     return (
-        <>
-            <div className='CourseList'>
+        <div className='CourseList' >
+            <div >
                 <h3>可选课程</h3>
                 <Search
                     placeholder="input search text"
@@ -81,11 +82,11 @@ function CourseList(props: CourseProps) {
                 ></Search>
                 <CourseTable callback={handleTableconfirm} confirm='选课' course={courseUnChoosed}></CourseTable>
             </div>
-            <div className='CourseList'>
+            <div >
                 <h3>已选课程</h3>
                 <CourseTable callback={handleTableconfirm} confirm='退课' course={courseChoosed}></CourseTable>
             </div>
-        </>
+        </div>
     )
 }
 

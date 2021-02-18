@@ -23,7 +23,7 @@ function GradeTable(props: CourseProps) {
         },
         {
             title: '成绩',
-            dataIndex: 'credit',
+            dataIndex: 'grade',
         }
     ];
     return (

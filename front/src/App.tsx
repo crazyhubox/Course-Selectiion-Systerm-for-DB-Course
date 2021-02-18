@@ -88,7 +88,7 @@ let ProfileContainer = connect(
 let AdminContainer = connect(
   (state: any) => {
     return ({
-      student: state.student,
+      courseInfo: state.courseInfo,
       courseFinish: state.courseFinish,
       courseUnfinish: state.courseUnfinish,
     })

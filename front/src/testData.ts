@@ -115,7 +115,7 @@ courseInfo[1].addStudent({
 }, 81)
 
 
-// *所有课程以及学生的信息  S表和C表
+// * 所有课程以及学生的信息  S表和C表
 //  修改S表和C表
 
 
@@ -125,6 +125,7 @@ let initState = {
     student: student,
     courseFinish: courseFinish,
     courseUnfinish: courseUnfinish,
+    courseInfo:courseInfo
 }
 
 

@@ -3,6 +3,7 @@
 import { ReactNode } from 'react';
 import { authorType, User } from '../global'
 import { Redirect } from 'react-router'
+import { connect } from 'react-redux';
 
 
 
@@ -46,4 +47,9 @@ function check(user: User): authorType {
 }
 
 
-export { AuthorCheck }
+//AuthorCheck 
+let ACKContainer = connect(
+    (state: any) => ({ user: state.user })
+)(AuthorCheck)
+
+export default ACKContainer

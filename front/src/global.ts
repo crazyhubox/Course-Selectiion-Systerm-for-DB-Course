@@ -113,9 +113,48 @@ class CourseWithStudents {
     }
 }
 
+// bind student with editFlag
+class StudentWithEditflag {
+    student: Student
+    edited: boolean
+
+    constructor(agrs: { sno: string, sname: string, sex: string, age: string, sdept: string, logn: string }) {
+        this.student = new Student(agrs);
+        this.edited = false
+    }
+}
+
+// bind course with editFlag
+class CourseWithEditflag {
+    course: Course
+    edited: boolean
+    constructor(args: { cno: string, cname: string, credit: number, cdept: string, tname: string, grade?: number }) {
+        this.course = new Course(args)
+        this.edited = false
+    }
+}
+
+
+// 自定义函数
+
+
+function myClone<T>(obj: T): T {
+    let str = JSON.stringify(obj)
+    let newobj: T
+    newobj = JSON.parse(str)
+    return newobj
+}
 
 
 
 
-
-export { authorType, User, Student, Course, StudentWithGrade, CourseWithStudents }
+export {
+    myClone,
+    authorType,
+    User, Student,
+    Course,
+    StudentWithGrade,
+    CourseWithEditflag,
+    StudentWithEditflag,
+    CourseWithStudents,
+}

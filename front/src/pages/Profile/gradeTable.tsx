@@ -12,6 +12,12 @@ interface CourseProps {
 function GradeTable(props: CourseProps) {
 
 
+    // event handler
+    function mainOnClick() {
+        let link = document.getElementById('to/profile/gradedetail')
+        link?.click()
+    }
+
     const columns: ColumnsType<Course> = [
         {
             title: '课号',
@@ -27,7 +33,7 @@ function GradeTable(props: CourseProps) {
         }
     ];
     return (
-        <div>
+        <div onClick={mainOnClick} >
             <h3>成绩表</h3>
             <Table<Course> size='middle' columns={columns}
                 rowKey={record => record.cno}

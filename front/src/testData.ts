@@ -1,4 +1,4 @@
-import { User, Student, Course, CourseWithStudents } from './global'
+import { User, Student, Course, CourseWithStudents, StudentWithEditflag, CourseWithEditflag } from './global'
 
 
 // ! 学生页面相关数据
@@ -98,12 +98,12 @@ courseInfo[0].addStudent({
 }, 80)
 
 courseInfo[0].addStudent({
-    sno: '2482', sname: 'lin', sex: 'male', age: '18', sdept: '计科', logn: 'lin'
+    sno: '2482', sname: 'ling', sex: 'male', age: '18', sdept: '计科', logn: 'lin'
 }, 81)
 
 
 courseInfo.push(new CourseWithStudents({
-    cno: '08305008', cname: '计算机组成原理', credit: 4, cdept: '计算机学院', tname: '马小红'
+    cno: '08305009', cname: '计算机组成原理', credit: 4, cdept: '计算机学院', tname: '马小红'
 }))
 
 courseInfo[1].addStudent({
@@ -118,14 +118,32 @@ courseInfo[1].addStudent({
 // * 所有课程以及学生的信息  S表和C表
 //  修改S表和C表
 
+// 学生信息
+let studentsList: StudentWithEditflag[] = []
+studentsList.push(new StudentWithEditflag({
+    sno: '2481', sname: 'Lin', sex: 'male', age: '18', sdept: '计科', logn: 'lin'
+}))
+studentsList.push(new StudentWithEditflag({
+    sno: '2482', sname: 'Ling', sex: 'female', age: '18', sdept: '计科', logn: 'ling'
+}))
 
+// 课程信息
+let coursesList: CourseWithEditflag[] = []
+coursesList.push(new CourseWithEditflag({
+    cno: '08305008', cname: '数据库原理', credit: 4, cdept: '计算机学院', tname: '马小红'
+}))
+coursesList.push(new CourseWithEditflag({
+    cno: '08305013', cname: '编译原理', credit: 4, cdept: '计算机学院', tname: '马小黄'
+}))
 
 let initState = {
     user: new User(),
     student: student,
     courseFinish: courseFinish,
     courseUnfinish: courseUnfinish,
-    courseInfo:courseInfo
+    courseInfo: courseInfo,
+    studentsList: studentsList,
+    coursesList: coursesList,
 }
 
 

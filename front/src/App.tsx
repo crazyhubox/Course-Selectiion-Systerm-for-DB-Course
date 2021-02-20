@@ -5,14 +5,17 @@ import {
   Route,
   Link,
 } from "react-router-dom";
-import { AuthorCheck } from './authorcheck/AuthorCheck'
 
+import AuthorCheck from './authorcheck/AuthorCheck'
 import Profile from './pages/Profile';
 import Login from './pages/login';
 import Admin from './pages/Admin';
+import Maintain from './pages/Admin/Maintain';
+import GradeDetail from './pages/Profile/GradeDetail';
+import Graph from './pages/Admin/Graph';
 import { authorType, User } from './global';
-import { connect } from 'react-redux';
 import { Action } from 'redux';
+import React from 'react';
 
 
 
@@ -22,37 +25,60 @@ interface props {
 }
 
 function App(props: props) {
-  console.log("APP:", props);
 
   return (
     <div className='APP'>
+
+      {/* ! 路由设定 */}
       <Router>
         <Switch>
+          <Route path="/profile/gradedetail" >
+            <AuthorCheck
+              author={authorType.students} defult='/'>
+              <GradeDetail />
+            </AuthorCheck>
+          </Route>
 
           <Route path="/profile" >
-            <ACKContainer
+            <AuthorCheck
               author={authorType.students} defult='/'>
-              <ProfileContainer />
-            </ACKContainer>
+              <Profile />
+            </AuthorCheck>
+          </Route>
+
+          <Route path="/admin/maintain" >
+            <AuthorCheck
+              author={authorType.admin} defult='/'>
+              <Maintain />
+            </AuthorCheck>
+          </Route>
+
+          <Route path="/admin/graph" >
+            <AuthorCheck
+              author={authorType.admin} defult='/'>
+              <Graph />
+            </AuthorCheck>
           </Route>
 
           <Route path="/admin" >
-            <ACKContainer
+            <AuthorCheck
               author={authorType.admin} defult='/'>
-              <AdminContainer />
-            </ACKContainer>
+              <Admin />
+            </AuthorCheck>
           </Route>
 
           <Route path="/" >
-            <LoginContainer></LoginContainer>
+            <Login />
           </Route>
 
         </Switch>
 
         {/* 用于实现 js 自主通过 router 跳转的 连接 */}
         <Link to='/profile' id='to/profile' ></Link>
+        <Link to='/profile/gradedetail' id='to/profile/gradedetail' ></Link>
         <Link to='/admin' id='to/admin' ></Link>
-
+        <Link to='/admin/maintain' id='to/admin/maintain' ></Link>
+        <Link to='/admin/graph' id='to/admin/graph' ></Link>
 
       </Router>
 
@@ -63,37 +89,13 @@ function App(props: props) {
 
 // 定义容器
 
-//AuthorCheck 
-let ACKContainer = connect(
-  (state: any) => ({ user: state.user })
-)(AuthorCheck)
 
-let LoginContainer = connect(
-  (state: any) => {
-    return ({
-      user: state.user,
-      dispatch: state.dispatch,
-    })
-  }
-)(Login)
 
-let ProfileContainer = connect(
-  (state: any) => ({
-    student: state.student,
-    courseFinish: state.courseFinish,
-    courseUnfinish: state.courseUnfinish,
-  })
-)(Profile)
 
-let AdminContainer = connect(
-  (state: any) => {
-    return ({
-      courseInfo: state.courseInfo,
-      courseFinish: state.courseFinish,
-      courseUnfinish: state.courseUnfinish,
-    })
-  }
-)(Admin)
+
+
+
+
 
 
 

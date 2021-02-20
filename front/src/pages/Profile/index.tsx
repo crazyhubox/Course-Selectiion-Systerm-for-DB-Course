@@ -65,6 +65,13 @@ function Profile(props: props) {
     );
 }
 
+// 链接 reducer 
+let ProfileContainer = connect(
+    (state: any) => ({
+        student: state.student,
+        courseFinish: state.courseFinish,
+        courseUnfinish: state.courseUnfinish,
+    })
+)(Profile)
 
-
-export default Profile
+export default ProfileContainer

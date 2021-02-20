@@ -6,6 +6,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import '../css/login.scss'
 import { authorType, User } from '../global';
 import { AnyAction } from 'redux';
+import { connect } from 'react-redux';
 
 interface props {
     user: User
@@ -13,6 +14,9 @@ interface props {
 }
 
 const Login = (props: props) => {
+
+    console.log("Login loading :", props);
+
 
     //  输入结束，点击登录
     const onFinish = (values: string) => {
@@ -96,4 +100,13 @@ const Login = (props: props) => {
     );
 };
 
-export default Login
+let LoginContainer = connect(
+    (state: any) => {
+        return ({
+            user: state.user,
+            dispatch: state.dispatch,
+        })
+    }
+)(Login)
+
+export default LoginContainer

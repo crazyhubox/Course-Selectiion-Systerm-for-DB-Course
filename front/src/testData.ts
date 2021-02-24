@@ -94,12 +94,12 @@ courseInfo.push(
 )
 
 courseInfo[0].addStudent({
-    sno: '2481', sname: 'lin', sex: 'male', age: '18', sdept: '计科', logn: 'lin'
-}, 80)
+    sno: '2481', sname: 'lin', sex: 'male', age: '18', sdept: '计科', logn: 'lin', grade: 80
+})
 
 courseInfo[0].addStudent({
-    sno: '2482', sname: 'ling', sex: 'male', age: '18', sdept: '计科', logn: 'lin'
-}, 81)
+    sno: '2482', sname: 'ling', sex: 'male', age: '18', sdept: '计科', logn: 'lin', grade: 81
+})
 
 
 courseInfo.push(new CourseWithStudents({
@@ -107,12 +107,12 @@ courseInfo.push(new CourseWithStudents({
 }))
 
 courseInfo[1].addStudent({
-    sno: '2481', sname: 'Ling', sex: 'male', age: '18', sdept: '计科', logn: 'lin'
-}, 80)
+    sno: '2481', sname: 'Ling', sex: 'male', age: '18', sdept: '计科', logn: 'lin', grade: 80
+})
 
 courseInfo[1].addStudent({
-    sno: '2482', sname: 'Ling', sex: 'male', age: '18', sdept: '计科', logn: 'lin'
-}, 81)
+    sno: '2482', sname: 'Ling', sex: 'male', age: '18', sdept: '计科', logn: 'lin', grade: 82
+})
 
 
 // * 所有课程以及学生的信息  S表和C表

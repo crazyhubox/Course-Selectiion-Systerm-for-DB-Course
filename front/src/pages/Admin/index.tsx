@@ -32,12 +32,12 @@ function Admin(props: props) {
     // data process
     const dataSource_StudentsTable = currentCourse.students.map((item) => (
         {
-            sno: item.student.sno,
-            sname: item.student.sname,
+            sno: item.sno,
+            sname: item.sname,
 
             // 为每个单元格准备 key
-            key2: (item.student.sno + "-2"),
-            key3: (item.student.sno + "-3"),
+            key2: (item.sno + "-2"),
+            key3: (item.sno + "-3"),
 
             // 可修改的 grade 单元格
             grade: (
@@ -55,7 +55,7 @@ function Admin(props: props) {
                             let tempCurse: CourseWithStudents = myClone(currentCourse)
                             // tempCurse
                             tempCurse.students.forEach((stuItem) => {
-                                if (stuItem.student.sno === item.student.sno) {
+                                if (stuItem.sno === item.sno) {
                                     let num = Number(event.target.value)
                                     if (!isNaN(num)) {
                                         stuItem.grade = num

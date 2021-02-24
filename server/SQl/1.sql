@@ -16,14 +16,13 @@ WHERE cno IN (select cno
     WHERE sno
 = 1107 )
 
--- 已完成 课程
-SELECT *
-from SC
-WHERE sno = 1107
-    AND grade IS NOT NULL
+
 
 -- 未完成 已选 课程
+
 SELECT *
+FROM C
+WHERE cno not IN (SELECT cno
 from SC
 WHERE sno = 1107
-    AND grade IS NULL
+    AND grade IS NULL)

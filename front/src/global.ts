@@ -38,13 +38,17 @@ class Student {
     age: string
     sdept: string
     logn: string
-    constructor(agrs: { sno: string, sname: string, sex: string, age: string, sdept: string, logn: string }) {
+    grade: number = -1
+    constructor(agrs: { sno: string, sname: string, sex: string, age: string, sdept: string, logn: string, grade?: number }) {
         this.sno = agrs.sno
         this.sname = agrs.sname
         this.sex = agrs.sex
         this.age = agrs.age
         this.sdept = agrs.sdept
         this.logn = agrs.logn
+        if (this.grade !== undefined) {
+            this.grade = agrs.grade as number
+        }
     }
 }
 
@@ -102,14 +106,14 @@ class StudentWithGrade {
 // Clear who are in the course 
 class CourseWithStudents {
     course: Course
-    students: StudentWithGrade[]
+    students: Student[]
     constructor(args: { cno: string, cname: string, credit: number, cdept: string, tname: string, grade?: number }) {
         this.course = new Course(args)
         this.students = []
     }
 
-    addStudent(args: { sno: string, sname: string, sex: string, age: string, sdept: string, logn: string }, grade: number) {
-        this.students.push(new StudentWithGrade(args, grade))
+    addStudent(args: { sno: string, sname: string, sex: string, age: string, sdept: string, logn: string, grade: number }) {
+        this.students.push(new Student(args))
     }
 }
 

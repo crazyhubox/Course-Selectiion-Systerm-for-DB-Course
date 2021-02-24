@@ -33,53 +33,235 @@ async def getTheStu(id: str):
 
 @app.get("/API/cs/", response_model=List[Course])
 async def getAllFinCousOfTheStu(id: str, flag: str):
-    # 获取课程信息
-
+    # 根据 flag 决定 SQL
     # 课程已经完成
     if(flag == 'finished'):
-        sql = ' select * from S where SNO = %s and grade is not null' % (id)
+        sql = ''' 
+            SELECT C.cno, cname, credit, cdept, tname, grade
+            FROM C, SC
+            WHERE C.cno =SC.cno
+                AND SC.sno = %s
+                AND grade IS NOT NULL
+            ''' % (id)
     # 课程 未完成 已选
     elif(flag == 'selected'):
-        sql = ' select * from S where SNO = %s and grade is null' % (id)
+        sql = '''
+            SELECT C.cno, cname, credit, cdept, tname, grade
+            FROM C, SC
+            WHERE C.cno =SC.cno
+                AND SC.sno = %s
+                AND grade IS NULL
+        ''' % (id)
     # 课程 未完成 未选
     else:
-        pass
+        sql = '''
+            SELECT *
+            FROM C
+            WHERE 
+                not exists (select *
+            from SC
+            WHERE C.cno =SC.cno and SC.sno =%s )
+        ''' % (id)
 
-# 返回课程信息
-    pass
+    # 执行 SQL 并获取结果
+    cursor.execute(sql)
+    couse_list = cursor.fetchall()
+
+    # 将结果 模型化并返回
+    res = []
+    if couse_list is not None:
+        for i in couse_list:
+            res.append(Course(**i))
+
+    return res
 
 
 @app.get("/API/ass/", response_model=List[Student])
 async def getAllStu():
-    pass
+    # 初始化 SQL
+    sql = '''
+        SELECT *
+        FROM S
+    '''
+
+    # 执行 SQL 并获取结果
+    cursor.execute(sql)
+    rs = cursor.fetchall()
+
+    # 将结果 模型化并返回
+    res = []
+    if rs is not None:
+        for i in rs:
+            res.append(Student(**i))
+
+    return res
 
 
 @app.get("/API/acs/", response_model=List[Course])
 async def getAllCous():
-    pass
+    # 初始化 SQL
+    sql = '''
+        SELECT *
+        FROM C
+    '''
+
+    # 执行 SQL 并获取结果
+    cursor.execute(sql)
+    rs = cursor.fetchall()
+
+    # 将结果 模型化并返回
+    res = []
+    if rs is not None:
+        for i in rs:
+            res.append(Course(**i))
+
+    return res
 
 
 @app.get("/API/cws/", response_model=List[CourseWithStudents])
 async def getAllCousWS():
-    pass
+    # 载入 Course
+    courses = []
+    # 初始化 SQL
+    sql = '''
+        SELECT *
+        FROM C
+    '''
+
+    # 执行 SQL 并获取结果
+    cursor.execute(sql)
+    rs = cursor.fetchall()
+
+    # 将结果 模型化并返回
+    res = []
+    if rs is not None:
+        for i in rs:
+            res.append(Course(**i))
+
+    # 将 course list 转变为 Cws list
+    cous = []
+    for item in res:
+        cous.append(CourseWithStudents(course=item,
+                                       students=[]))
+
+    # 载入 Students
+    for item in cous:
+        # 初始化 SQL
+        sql = '''
+            SELECT S.sno, sname, sex, age, sdept, logn , grade
+            FROM S, SC
+            WHERE S.sno =SC.sno
+                AND SC.cno = %s
+        ''' % (item.course.cno)
+
+        # 执行 SQL 并获取结果
+        cursor.execute(sql)
+        rs = cursor.fetchall()
+
+        # 将结果 模型化并返回
+        if rs is not None:
+            for i in rs:
+                item.students.append(Student(**i))
+
+    # 返回 Cws
+    return cous
 
 
 # ! methord: post
 @app.post("/API/swc/", response_model=Respond)
 async def selectCous(flag: str, swc: StudentWithCourses):
-    pass
+    for item in swc.courses:
+        s_id = swc.student.sno
+        c_id = item.cno
+        # 初始化 SQL
+        # 增选课程
+        if(flag == 'add'):
+            sql = '''
+            INSERT into SC
+                (sno,cno)
+            VALUES
+                (%s , %s)
+            ''' % (s_id, c_id)
+        # 删选课程
+        else:
+            sql = '''
+            DELETE from SC
+            WHERE sno = %s 
+            AND cno = %s
+            ''' % (s_id, c_id)
+        # 执行 SQL 并获取结果
+        cursor.execute(sql)
+
+    # 将结果 模型化并返回
+    return Respond()
+
+# 录入修改成绩
 
 
 @app.post("/API/cws/", response_model=Respond)
-async def fixGrade(flag: str, cws: CourseWithStudents):
-    pass
+async def fixGrade(cws: CourseWithStudents):
+    for item in cws.students:
+        c_id = cws.course.cno
+        s_id = item.sno
+        grade = item.grade
+
+        # 初始化 SQL
+        sql = '''
+            UPDATE SC
+            SET
+            grade = %s
+            WHERE sno = %s AND cno = %s 
+            ''' % (grade, s_id, c_id)
+
+        # 执行 SQL 并获取结果
+        cursor.execute(sql)
+
+    # 将结果 模型化并返回
+    return Respond()
 
 
 @app.post("/API/cs/", response_model=Respond)
-async def updCousInfo(flag: str, cs: List[Course]):
-    pass
+async def updCousInfo(cs: List[Course]):
+    for item in cs:
+
+        # 初始化 SQL
+        sql = '''
+            UPDATE C
+            SET
+            cname = '%s',
+            credit = '%d',
+            cdept = '%s',
+            tname = '%s'
+            WHERE cno = %s 
+            ''' % (item.cname, item.credit, item.cdept, item.tname, item.cno)
+
+        print(sql)
+
+        # 执行 SQL 并获取结果
+        cursor.execute(sql)
+
+    # 将结果 模型化并返回
+    return Respond()
 
 
 @app.post("/API/ss/", response_model=Respond)
-async def updStuInfo(flag: str, ss: List[Student]):
-    pass
+async def updStuInfo(ss: List[Student]):
+    for item in ss:
+
+        # 初始化 SQL
+        sql = '''
+            UPDATE S
+            SET
+            sname = ‘%s’,
+            sex = ’%d‘,
+            age = ‘%s’
+            sdept = ’%s‘,
+            logn = ’%s‘
+            WHERE sno = %s 
+            ''' % (item.sname, item.sex, item.age, item.sdept, item.logn, item.cno)
+
+        # 执行 SQL 并获取结果
+        cursor.execute(sql)
+
+    # 将结果 模型化并返回
+    return Respond()

@@ -11,7 +11,14 @@ cursor = conn.cursor(as_dict=True)
 
 
 # 获取 C 表
-sql = 'select * from SC where sno = 1107 and grade is not null'
+id = '1107'
+
+sql = ''' 
+            SELECT *
+            from SC
+            WHERE sno = %s
+            AND grade IS NOT NULL
+            ''' % (id)
 cursor.execute(sql)
 rs = cursor.fetchall()
 

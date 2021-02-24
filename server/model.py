@@ -5,22 +5,21 @@ from pydantic import BaseModel, Field
 # 定义 modle
 class Student(BaseModel):
     sno: str
-    sname: str
-    sex: str
-    age: str
-    sdept: str
-    logn: str
-    pswd: str
-    grade: Optional[float] = None
+    sname: Optional[str]
+    sex: Optional[str]
+    age: Optional[str]
+    sdept: Optional[str]
+    logn: Optional[str]
+    grade: Optional[float]
 
 
 class Course(BaseModel):
     cno: str
-    cname: str
-    credit: str
-    cdept: str
-    tname: str
-    grade: Optional[float] = None
+    cname: Optional[str]
+    credit: Optional[int]
+    cdept: Optional[str]
+    tname: Optional[str]
+    grade: Optional[float]
 
 
 class CourseWithStudents(BaseModel):
@@ -34,5 +33,5 @@ class StudentWithCourses(BaseModel):
 
 
 class Respond(BaseModel):
-    flag: bool
+    flag: bool = True
     msg: Optional[str]

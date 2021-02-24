@@ -12,9 +12,6 @@ GO
 UPDATE SC
 SET
 grade = 91
-    -- [Colum1] = Colum1_Value,
-    -- [Colum2] = Colum2_Value
-    -- add more columns and values here
 WHERE sno = 1107 AND cno = 	8305001 
 GO
 

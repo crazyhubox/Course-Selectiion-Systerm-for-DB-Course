@@ -2,16 +2,25 @@ from model import *
 import pymssql
 
 
-# 获取数据
+# 建立连接
 conn = pymssql.connect(host="192.168.31.249", user='sa',
                        password='lin12345678', database='DBforpProject', charset='utf8')
 
+# 获取设定游标
 cursor = conn.cursor(as_dict=True)
 
-# 获取S表
+# 编写 SQL 语句
 sql = 'select * from s'
+
+# 执行SQL语句
 cursor.execute(sql)
+
+# 获取所有查询结果
 rs = cursor.fetchall()
+
+# 如果有进行修改的话需要 进行 commit
+conn.commit()
+
 
 # 获取 C 表
 sql = 'select * from C'

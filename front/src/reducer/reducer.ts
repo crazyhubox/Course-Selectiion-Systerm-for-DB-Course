@@ -30,8 +30,26 @@ class Reducer {
 
 // 用于修改用户信息
 class EditUser extends Reducer {
-    newUser = (state: any, action: AnyAction) => {
+    login = (state: any, action: AnyAction) => {
         state.user = action.user
+    }
+
+    init = (state: any, action: AnyAction) => {
+
+        if ('student' in action)
+            state.student = action.student
+        if ('courseFinish' in action)
+            state.courseFinish = action.courseFinish
+        if ('courseUnfinish' in action)
+            state.courseUnfinish = action.courseUnfinish
+        if ('courseInfo' in action)
+            state.courseInfo = action.courseInfo
+        if ('studentsList' in action)
+            state.studentsList = action.studentsList
+        if ('coursesList' in action)
+            state.coursesList = action.coursesList
+
+
     }
 }
 
@@ -41,7 +59,7 @@ class SelectCourse extends Reducer {
     select = (state: any, action: AnyAction) => {
         const selectedRowKeys = action.selectedRowKeys
 
-        // 提交数据库 
+        // 提交数据库 (在 Effect 中完成)
         // 成功后修改本地数据
         let [...newcourseUnfinish] = state.courseUnfinish;
 
@@ -143,6 +161,7 @@ export default function mainReducer(state: any, action: AnyAction) {
     const editCourse = new EditCourse()
     editCourse.exec(newState, action)
 
+    console.log("debug ", "after action ", newState);
 
     return newState
 }

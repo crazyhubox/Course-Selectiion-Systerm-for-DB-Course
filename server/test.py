@@ -41,8 +41,8 @@ if rs is not None:
 # print((modles))
 
 
-sql = " select * from S where SNO = 1107 "
+sql = " select pswd from S where sno = 1107 "
 cursor.execute(sql)
 rs = cursor.fetchall()
-s = Student(**rs[0])
-print(s)
+
+print(rs[0]['pswd'].strip() == '1107')

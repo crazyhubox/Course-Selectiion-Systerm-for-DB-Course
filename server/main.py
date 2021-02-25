@@ -3,6 +3,7 @@ from model import Course, CourseWithStudents, Student
 from typing import List
 from fastapi import FastAPI
 import pymssql
+from fastapi.middleware.cors import CORSMiddleware
 from model import *
 
 # connect to the database init
@@ -11,10 +12,24 @@ sqlHost = "192.168.31.249"
 conn = pymssql.connect(host=sqlHost, user='sa',
                        password='lin12345678', database='DBforpProject', charset='utf8')
 
+conn.autocommit(True)
+
 cursor = conn.cursor(as_dict=True)
 
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
@@ -167,6 +182,43 @@ async def getAllCousWS():
     return cous
 
 
+@app.get('/API/author/')
+async def authorize(id: str, pswd: str):
+
+    # admin
+    if(id == 'sa' and pswd == '123'):
+        return{
+            'authorType': 2,
+            'token': ''
+        }
+
+    # 查询 校对密码
+    sql = '''
+    select pswd
+    FROM S
+    WHERE sno = '%s'
+    ''' % (id)
+
+    # 执行 SQL 并获取结果
+    cursor.execute(sql)
+    rs = cursor.fetchall()
+
+    # guess
+    # print(rs[0]['pswd'].strip(), pswd, rs[0]['pswd'].strip() == pswd)
+    if(len(rs) == 0 or rs[0]['pswd'].strip() != pswd.strip()):
+        return{
+            'authorType': 0,
+            'token': ''
+        }
+
+    # student
+    else:
+        return {
+            'authorType': 1,
+            'token': ''
+        }
+
+
 # ! methord: post
 @app.post("/API/swc/", response_model=Respond)
 async def selectCous(flag: str, swc: StudentWithCourses):
@@ -252,13 +304,13 @@ async def updStuInfo(ss: List[Student]):
         sql = '''
             UPDATE S
             SET
-            sname = ‘%s’,
-            sex = ’%d‘,
-            age = ‘%s’
-            sdept = ’%s‘,
-            logn = ’%s‘
+            sname = '%s',
+            sex = '%s',
+            age = '%s',
+            sdept = '%s',
+            logn = '%s'
             WHERE sno = %s 
-            ''' % (item.sname, item.sex, item.age, item.sdept, item.logn, item.cno)
+            ''' % (item.sname, item.sex, item.age, item.sdept, item.logn, item.sno)
 
         # 执行 SQL 并获取结果
         cursor.execute(sql)

@@ -3,6 +3,7 @@ import { AnyAction } from "redux";
 import { CourseWithEditflag, myClone, StudentWithEditflag } from "../../../global";
 import { Button, Input, Table, Tabs } from 'antd';
 import React, { useState } from "react";
+import EffectDispatch from "../../../reducer/effect";
 
 
 const { TabPane } = Tabs;
@@ -16,9 +17,14 @@ interface props {
 function Maintain(props: props) {
 
     // useState
-    const [currentStudents, setStudents] = useState(props.studentsList)
-    const [currentCourses, setCourses] = useState(props.coursesList)
+
+    const [currentStudents, setStudents] = useState(props.studentsList === undefined ? [] : props.studentsList)
+    const [currentCourses, setCourses] = useState(props.coursesList === undefined ? [] : props.coursesList)
     const [tabSelected, setTabSelected] = useState('1')
+
+
+    console.log("debug", "maitain", currentStudents, currentCourses);
+
 
 
     // Data Process
@@ -327,7 +333,8 @@ function Maintain(props: props) {
             action.CoursesList = currentCourses
         }
 
-        props.dispatch(action)
+        // props.dispatch(action)
+        EffectDispatch(action)
     }
 
 

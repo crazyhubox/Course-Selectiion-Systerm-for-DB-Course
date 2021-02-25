@@ -136,14 +136,25 @@ coursesList.push(new CourseWithEditflag({
     cno: '08305013', cname: '编译原理', credit: 4, cdept: '计算机学院', tname: '马小黄'
 }))
 
+// let initState = {
+//     user: new User(),
+//     student: student,
+//     courseFinish: courseFinish,
+//     courseUnfinish: courseUnfinish,
+//     courseInfo: courseInfo,
+//     studentsList: studentsList,
+//     coursesList: coursesList,
+// }
+
+
 let initState = {
     user: new User(),
     student: student,
-    courseFinish: courseFinish,
-    courseUnfinish: courseUnfinish,
-    courseInfo: courseInfo,
-    studentsList: studentsList,
-    coursesList: coursesList,
+    courseFinish: [],
+    courseUnfinish: [],
+    courseInfo: [],
+    studentsList: [],
+    coursesList: [],
 }
 
 

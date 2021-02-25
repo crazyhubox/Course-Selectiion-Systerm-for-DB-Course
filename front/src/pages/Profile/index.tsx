@@ -13,7 +13,10 @@ const { Sider, Content } = Layout;
 
 // 定义容器
 let CourseUnFinishContainer = connect(
-    (state: any) => ({ courses: state.courseUnfinish })
+    (state: any) => ({
+        courses: state.courseUnfinish,
+        student: state.student
+    })
 )(CourseList)
 
 

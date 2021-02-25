@@ -11,20 +11,20 @@ class User {
     constructor(username?: string, password?: string) {
         if (username !== undefined && password !== undefined) {
             this.name = username
-            let temp = this.getToken(username, password)
-            this.token = temp.token
-            this.author = temp.author
+            this.token = ''
         }
     }
 
-    getToken(username: string, password: string): { token: string, author: authorType } {
-        if (username === 'sa' && password === '123') {
-            return { token: 'admin', author: authorType.admin }
-        } else if (username === 'lin' && password === '2481') {
-            return { token: '2481', author: authorType.students }
-        }
-        return { token: 'guess', author: authorType.guest }
-    }
+    // getToken(username: string, password: string): { token: string, author: authorType } {
+    //     // 登陆服务器 获取token
+
+    //     if (username === 'sa' && password === '123') {
+    //         return { token: 'admin', author: authorType.admin }
+    //     } else if (username === 'lin' && password === '2481') {
+    //         return { token: '2481', author: authorType.students }
+    //     }
+    //     return { token: 'guess', author: authorType.guest }
+    // }
 }
 
 

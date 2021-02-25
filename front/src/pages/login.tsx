@@ -7,6 +7,7 @@ import '../css/login.scss'
 import { authorType, User } from '../global';
 import { AnyAction } from 'redux';
 import { connect } from 'react-redux';
+import EffectDispatch from '../reducer/effect';
 
 interface props {
     user: User
@@ -30,38 +31,50 @@ const Login = (props: props) => {
         let json = values as unknown as temp
 
 
-        // 创建 action ，传出更新数据
+        // 验证登陆
         let action = {
-            type: 'newUser',
-            user: new User(json.username, json.password)
+            type: 'login',
+            user: new User(json.username, json.password),
+            pswd: json.password
         }
 
-        console.log("login:", action, props);
+        EffectDispatch(action).then(() => {
 
-        props.dispatch(action)
+            // init State
+            EffectDispatch({
+                type: 'init',
+                user: action.user
+            })
 
+            // 页面跳转
+            if (action.user.author === authorType.admin) {
 
-        // 页面跳转
-        if (action.user.author === authorType.admin) {
+                //  history 没有传入，目前还不知道是否有更加适当的方法
+                //  用来完成页面跳转
+                let link = document.getElementById('to/admin')
+                console.log("logn link：", link);
+                if (link !== null) {
+                    link.click()
+                }
 
-            //  history 没有传入，目前还不知道是否有更加适当的方法
-            //  用来完成页面跳转
-            let link = document.getElementById('to/admin')
-            console.log("logn link：", link);
-            if (link !== null) {
-                link.click()
+            } else if (action.user.author === authorType.students) {
+
+                let link = document.getElementById('to/profile')
+                console.log("logn link：", link);
+                if (link !== null) {
+                    link.click()
+                }
+            } else {
+                message.error("账号或密码错误，请重新输入！")
             }
+        })
+        // props.dispatch(action)
 
-        } else if (action.user.author === authorType.students) {
 
-            let link = document.getElementById('to/profile')
-            console.log("logn link：", link);
-            if (link !== null) {
-                link.click()
-            }
-        } else {
-            message.error("账号或密码错误，请重新输入！")
-        }
+
+
+
+
     };
 
 

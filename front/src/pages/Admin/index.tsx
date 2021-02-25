@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { CourseWithStudents, myClone } from '../../global';
+import { CourseWithStudents, myClone, Student } from '../../global';
 import { Select, Card, Table, Button, Input } from 'antd'
 import { SelectValue } from 'antd/lib/select';
 import { AnyAction } from 'redux';
 import { connect } from 'react-redux';
+import EffectDispatch from '../../reducer/effect';
 
 
 
@@ -18,11 +19,20 @@ interface props {
 
 function Admin(props: props) {
 
-    console.log(props);
 
 
     // useState
-    const [currentCourse, setCurrentCourse] = useState<CourseWithStudents>(props.courseInfo[0])
+    let temp = {
+        course: {
+            cno: '请选择课程',
+            cname: '请选择课程',
+            credit: 0,
+            cdept: '请选择课程',
+            tname: '请选择课程'
+        },
+        students: []
+    } as unknown
+    const [currentCourse, setCurrentCourse] = useState<CourseWithStudents>((temp as CourseWithStudents))
     const [editFlag, setEditFlag] = useState(false)
     const [editButtonText, setEditButtonText] = useState("录入成绩")
 
@@ -30,48 +40,47 @@ function Admin(props: props) {
 
 
     // data process
-    const dataSource_StudentsTable = currentCourse.students.map((item) => (
-        {
-            sno: item.sno,
-            sname: item.sname,
+    let dataSource_StudentsTable: any[] | undefined = []
+    if (currentCourse !== undefined)
+        dataSource_StudentsTable = currentCourse.students.map((item) => (
+            {
+                sno: item.sno,
+                sname: item.sname,
 
-            // 为每个单元格准备 key
-            key2: (item.sno + "-2"),
-            key3: (item.sno + "-3"),
+                // 为每个单元格准备 key
+                key2: (item.sno + "-2"),
+                key3: (item.sno + "-3"),
 
-            // 可修改的 grade 单元格
-            grade: (
-                <Input
-                    style={{
-                        width: 200
-                    }}
-                    disabled={!editFlag}
-                    value={item.grade}
-                    maxLength={2}
-                    onChange={
-                        (event: React.ChangeEvent<HTMLInputElement>) => {
+                // 可修改的 grade 单元格
+                grade: (
+                    <Input
+                        style={{
+                            width: 200
+                        }}
+                        disabled={!editFlag}
+                        value={item.grade}
+                        maxLength={2}
+                        onChange={
+                            (event: React.ChangeEvent<HTMLInputElement>) => {
 
-                            // 修改curentCourse的数据
-                            let tempCurse: CourseWithStudents = myClone(currentCourse)
-                            // tempCurse
-                            tempCurse.students.forEach((stuItem) => {
-                                if (stuItem.sno === item.sno) {
-                                    let num = Number(event.target.value)
-                                    if (!isNaN(num)) {
-                                        stuItem.grade = num
+                                // 修改curentCourse的数据
+                                let tempCurse: CourseWithStudents = myClone(currentCourse)
+                                // tempCurse
+                                tempCurse.students.forEach((stuItem) => {
+                                    if (stuItem.sno === item.sno) {
+                                        let num = Number(event.target.value)
+                                        if (!isNaN(num)) {
+                                            stuItem.grade = num
+                                        }
                                     }
-                                }
-                            })
-                            setCurrentCourse(tempCurse)
+                                })
+                                setCurrentCourse(tempCurse)
+                            }
                         }
-                    }
-                />
-            )
-        }
-    ))
-
-
-    console.log("dataSource_StudentsTable", dataSource_StudentsTable);
+                    />
+                )
+            }
+        ))
 
 
     const columns = [
@@ -114,7 +123,8 @@ function Admin(props: props) {
                 type: 'fixGrade',
                 courseEdited: currentCourse
             }
-            props.dispatch(action)
+            // props.dispatch(action)
+            EffectDispatch(action)
         } else {
             setEditFlag(true)
             setEditButtonText("完成录入")

@@ -8,10 +8,8 @@ import 'antd/dist/antd.css';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import reducer from './reducer/reducer'
+import { store } from './reducer/store';
 
-
-let store = createStore(reducer)
 
 let mapStatesToProps = (state: any) => {
   return {

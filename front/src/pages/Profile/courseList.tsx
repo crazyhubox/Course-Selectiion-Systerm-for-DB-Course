@@ -2,7 +2,8 @@
 import { Input } from "antd";
 import React, { ReactText, useState } from "react";
 import { AnyAction } from "redux";
-import { Course } from "../../global";
+import { Course, Student } from "../../global";
+import EffectDispatch from "../../reducer/effect";
 import CourseTable from "./courseTable";
 
 const { Search } = Input
@@ -10,6 +11,7 @@ const { Search } = Input
 
 
 interface CourseProps {
+    student: Student
     courses: Course[]
     dispatch: (arg: AnyAction) => void
 }
@@ -22,7 +24,6 @@ function CourseList(props: CourseProps) {
     const [searchOn, setSearchOn] = useState(false);
     const [searchKeyWold, setSearchKeyWold] = useState('');
 
-
     let courseChoosed = props.courses.filter(item => item.choosed)
     let courseUnChoosed = props.courses.filter(item => !item.choosed)
 
@@ -30,8 +31,6 @@ function CourseList(props: CourseProps) {
     if (searchOn) {
         courseUnChoosed = courseUnChoosed.filter(item => item.search(searchKeyWold))
     }
-
-
 
 
 
@@ -62,10 +61,15 @@ function CourseList(props: CourseProps) {
 
         const action = {
             type: type,
-            selectedRowKeys: selectedRowKeys as string[]
+            student: props.student,
+            selectedRowKeys: selectedRowKeys as string[],
+            courseChoosed: courseChoosed,
+            courseUnChoosed: courseUnChoosed,
         }
 
-        props.dispatch(action)
+
+        EffectDispatch(action)
+        // props.dispatch(action)
 
     }
 

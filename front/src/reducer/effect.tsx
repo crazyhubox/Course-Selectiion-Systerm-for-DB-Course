@@ -6,7 +6,7 @@ import { authorType, Course, CourseWithEditflag, CourseWithStudents, Student, St
 import { dispatch } from "./store";
 
 
-axios.defaults.baseURL = 'http://127.0.0.1:8000/';
+axios.defaults.baseURL = 'http://10.95.221.89:8000/';
 
 
 

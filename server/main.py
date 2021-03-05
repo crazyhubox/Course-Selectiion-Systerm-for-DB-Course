@@ -262,7 +262,7 @@ async def fixGrade(cws: CourseWithStudents):
             UPDATE SC
             SET
             grade = %s
-            WHERE sno = %s AND cno = %s 
+            WHERE sno = %s AND cno = %s
             ''' % (grade, s_id, c_id)
 
         # 执行 SQL 并获取结果

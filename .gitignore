@@ -1,1 +1,5 @@
 front/.eslintcache
+server/.idea
+server/__pycache__
+server/components/__pycache__
+.DS_Store

@@ -1,3 +1,3 @@
-server:
+test:
     uvicorn main:app --reload
 

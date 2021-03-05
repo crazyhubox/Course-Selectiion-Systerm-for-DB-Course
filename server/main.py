@@ -8,7 +8,10 @@ from model import *
 
 # connect to the database init
 # 获取数据
-sqlHost = "10.89.146.84"
+
+# sqlHost = "10.89.146.84"
+sqlHost = "127.0.0.1"
+
 conn = pymssql.connect(host=sqlHost, user='sa',
                        password='lin12345678', database='DBforpProject', charset='utf8')
 
@@ -257,6 +260,9 @@ async def fixGrade(cws: CourseWithStudents):
         c_id = cws.course.cno
         s_id = item.sno
         grade = item.grade
+
+        if grade is None:  # 避免无效字段
+            grade = 'Null'
 
         # 初始化 SQL
         sql = '''

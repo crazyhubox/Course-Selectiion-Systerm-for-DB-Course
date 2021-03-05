@@ -8,7 +8,7 @@ from model import *
 
 # connect to the database init
 # 获取数据
-sqlHost = "192.168.31.249"
+sqlHost = "10.89.146.84"
 conn = pymssql.connect(host=sqlHost, user='sa',
                        password='lin12345678', database='DBforpProject', charset='utf8')
 
@@ -21,6 +21,7 @@ app = FastAPI()
 
 origins = [
     "http://localhost:3000",
+    "http://10.95.221.89:3000",
 ]
 
 app.add_middleware(
@@ -266,7 +267,11 @@ async def fixGrade(cws: CourseWithStudents):
             ''' % (grade, s_id, c_id)
 
         # 执行 SQL 并获取结果
-        cursor.execute(sql)
+        try:
+            cursor.execute(sql)
+        except pymssql.ProgrammingError as e:
+            print(e)
+            print(sql)
 
     # 将结果 模型化并返回
     return Respond()

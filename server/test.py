@@ -3,7 +3,7 @@ import pymssql
 
 
 # 建立连接
-conn = pymssql.connect(host="192.168.31.249", user='sa',
+conn = pymssql.connect(host="10.89.146.84", user='sa',
                        password='lin12345678', database='DBforpProject', charset='utf8')
 
 # 获取设定游标

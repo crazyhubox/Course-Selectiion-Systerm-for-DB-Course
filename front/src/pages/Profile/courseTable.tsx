@@ -51,6 +51,7 @@ function CourseTable(props: any) {
     // 处理 confirm 按钮点击事件
     const onConfirm = () => {
         props.callback(props.confirm, selectedRowKeys)
+        onSelectChange([])
     }
 
 

@@ -247,10 +247,8 @@ export default async function EffectDispatch(action: AnyAction) {
     const initer = new InitState()
     await initer.exec(action)
 
-    // return action
-
+    // 执行dispatch
     dispatch(action)
-
 }
 
 

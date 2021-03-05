@@ -70,11 +70,6 @@ const Login = (props: props) => {
         })
         // props.dispatch(action)
 
-
-
-
-
-
     };
 
 

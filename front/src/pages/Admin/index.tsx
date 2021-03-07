@@ -59,7 +59,7 @@ function Admin(props: props) {
                         }}
                         disabled={!editFlag}
                         value={item.grade}
-                        maxLength={3}
+                        maxLength={2}
                         onChange={
                             (event: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -222,4 +222,4 @@ let AdminContainer = connect(
 
 
 
-export default AdminContainer
+export default AdminContainer 

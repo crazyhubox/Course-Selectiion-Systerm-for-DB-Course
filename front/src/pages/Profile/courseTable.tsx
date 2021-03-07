@@ -1,5 +1,6 @@
 import { Button, Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
+import { log } from "console";
 import React, { ReactText, useState } from "react";
 import { Course } from "../../global";
 
@@ -49,7 +50,7 @@ function CourseTable(props: any) {
 
 
     // 处理 confirm 按钮点击事件
-    const onConfirm = () => {
+    const onConfirm = () => {        
         props.callback(props.confirm, selectedRowKeys)
         onSelectChange([])
     }
@@ -70,8 +71,5 @@ function CourseTable(props: any) {
         </div>
     )
 }
-
-
-
 
 export default CourseTable

@@ -1,30 +1,20 @@
+import asyncio
+from asyncio.events import Handle
 from model import Respond, StudentWithCourses
 from model import Course, CourseWithStudents, Student
 from typing import List
 from fastapi import FastAPI
-import pymssql
 from fastapi.middleware.cors import CORSMiddleware
 from model import *
+from components.asyncMysql import AsyncHandler
 
-# connect to the database init
-# 获取数据
-
-# sqlHost = "10.89.146.84"
-sqlHost = "127.0.0.1"
-
-conn = pymssql.connect(host=sqlHost, user='sa',
-                       password='lin12345678', database='DBforpProject', charset='utf8')
-
-conn.autocommit(True)
-
-cursor = conn.cursor(as_dict=True)
-
-
+# 使用数据库初始化一个处理器
+# Handler是一服务器到数据库的接口，封装了数数据库具体的查询过程
+# handler = Handler(MyDataBase(host='127.0.0.1',user='root',database='dataBase'))
 app = FastAPI()
 
 origins = [
     "http://localhost:3000",
-    "http://10.95.221.89:3000",
 ]
 
 app.add_middleware(
@@ -35,56 +25,28 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.on_event('startup')
+async def start():
+    global handler
+    handler = AsyncHandler()
 
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
 
-
+# 得到特定的学生    
 @app.get("/API/s/", response_model=Student)
 async def getTheStu(id: str):
-    sql = ' select * from S where SNO = %s' % (id)
-    cursor.execute(sql)
-    rs = cursor.fetchall()
+    rs = await handler.getStudent(id_num=id)
     s = Student(**rs[0])
     return s
 
-
+# 该学生所有的课程
 @app.get("/API/cs/", response_model=List[Course])
 async def getAllFinCousOfTheStu(id: str, flag: str):
     # 根据 flag 决定 SQL
     # 课程已经完成
-    if(flag == 'finished'):
-        sql = ''' 
-            SELECT C.cno, cname, credit, cdept, tname, grade
-            FROM C, SC
-            WHERE C.cno =SC.cno
-                AND SC.sno = %s
-                AND grade IS NOT NULL
-            ''' % (id)
-    # 课程 未完成 已选
-    elif(flag == 'selected'):
-        sql = '''
-            SELECT C.cno, cname, credit, cdept, tname, grade
-            FROM C, SC
-            WHERE C.cno =SC.cno
-                AND SC.sno = %s
-                AND grade IS NULL
-        ''' % (id)
-    # 课程 未完成 未选
-    else:
-        sql = '''
-            SELECT *
-            FROM C
-            WHERE 
-                not exists (select *
-            from SC
-            WHERE C.cno =SC.cno and SC.sno =%s )
-        ''' % (id)
-
-    # 执行 SQL 并获取结果
-    cursor.execute(sql)
-    couse_list = cursor.fetchall()
+    couse_list = await handler.getCouse(id_num=id,flag=flag)
 
     # 将结果 模型化并返回
     res = []
@@ -94,19 +56,10 @@ async def getAllFinCousOfTheStu(id: str, flag: str):
 
     return res
 
-
+# 得到所有学生
 @app.get("/API/ass/", response_model=List[Student])
 async def getAllStu():
-    # 初始化 SQL
-    sql = '''
-        SELECT *
-        FROM S
-    '''
-
-    # 执行 SQL 并获取结果
-    cursor.execute(sql)
-    rs = cursor.fetchall()
-
+    rs = await handler.getAllStudent()
     # 将结果 模型化并返回
     res = []
     if rs is not None:
@@ -115,18 +68,11 @@ async def getAllStu():
 
     return res
 
-
+# 得到所有的课程
 @app.get("/API/acs/", response_model=List[Course])
 async def getAllCous():
     # 初始化 SQL
-    sql = '''
-        SELECT *
-        FROM C
-    '''
-
-    # 执行 SQL 并获取结果
-    cursor.execute(sql)
-    rs = cursor.fetchall()
+    rs = await handler.getAllCouse()
 
     # 将结果 模型化并返回
     res = []
@@ -136,21 +82,14 @@ async def getAllCous():
 
     return res
 
-
+# 得到学生的课程和成绩
 @app.get("/API/cws/", response_model=List[CourseWithStudents])
 async def getAllCousWS():
     # 载入 Course
-    courses = []
+    # courses = []
+
     # 初始化 SQL
-    sql = '''
-        SELECT *
-        FROM C
-    '''
-
-    # 执行 SQL 并获取结果
-    cursor.execute(sql)
-    rs = cursor.fetchall()
-
+    rs = await handler.getAllCouse()
     # 将结果 模型化并返回
     res = []
     if rs is not None:
@@ -166,29 +105,17 @@ async def getAllCousWS():
     # 载入 Students
     for item in cous:
         # 初始化 SQL
-        sql = '''
-            SELECT S.sno, sname, sex, age, sdept, logn , grade
-            FROM S, SC
-            WHERE S.sno =SC.sno
-                AND SC.cno = %s
-        ''' % (item.course.cno)
-
-        # 执行 SQL 并获取结果
-        cursor.execute(sql)
-        rs = cursor.fetchall()
-
+        rs = await handler.getStuGrade(item.course.cno)
         # 将结果 模型化并返回
         if rs is not None:
             for i in rs:
                 item.students.append(Student(**i))
-
     # 返回 Cws
     return cous
 
-
+# 登录校验
 @app.get('/API/author/')
 async def authorize(id: str, pswd: str):
-
     # admin
     if(id == 'sa' and pswd == '123'):
         return{
@@ -197,24 +124,13 @@ async def authorize(id: str, pswd: str):
         }
 
     # 查询 校对密码
-    sql = '''
-    select pswd
-    FROM S
-    WHERE sno = '%s'
-    ''' % (id)
-
-    # 执行 SQL 并获取结果
-    cursor.execute(sql)
-    rs = cursor.fetchall()
-
-    # guess
-    # print(rs[0]['pswd'].strip(), pswd, rs[0]['pswd'].strip() == pswd)
+    rs = await handler.getPassword(id_num=id)
+    print(rs)
     if(len(rs) == 0 or rs[0]['pswd'].strip() != pswd.strip()):
         return{
             'authorType': 0,
             'token': ''
         }
-
     # student
     else:
         return {
@@ -223,6 +139,7 @@ async def authorize(id: str, pswd: str):
         }
 
 
+# 添加或者删除某学生某课程
 # ! methord: post
 @app.post("/API/swc/", response_model=Respond)
 async def selectCous(flag: str, swc: StudentWithCourses):
@@ -231,100 +148,43 @@ async def selectCous(flag: str, swc: StudentWithCourses):
         c_id = item.cno
         # 初始化 SQL
         # 增选课程
-        if(flag == 'add'):
-            sql = '''
-            INSERT into SC
-                (sno,cno)
-            VALUES
-                (%s , %s)
-            ''' % (s_id, c_id)
-        # 删选课程
-        else:
-            sql = '''
-            DELETE from SC
-            WHERE sno = %s 
-            AND cno = %s
-            ''' % (s_id, c_id)
-        # 执行 SQL 并获取结果
-        cursor.execute(sql)
-
+        await handler.addORdeleteCourse(flag=flag,s_id=s_id,c_id=c_id)
     # 将结果 模型化并返回
     return Respond()
 
 # 录入修改成绩
-
-
 @app.post("/API/cws/", response_model=Respond)
 async def fixGrade(cws: CourseWithStudents):
     for item in cws.students:
         c_id = cws.course.cno
         s_id = item.sno
         grade = item.grade
-
-        if grade is None:  # 避免无效字段
-            grade = 'Null'
-
         # 初始化 SQL
-        sql = '''
-            UPDATE SC
-            SET
-            grade = %s
-            WHERE sno = %s AND cno = %s
-            ''' % (grade, s_id, c_id)
-
-        # 执行 SQL 并获取结果
-        try:
-            cursor.execute(sql)
-        except pymssql.ProgrammingError as e:
-            print(e)
-            print(sql)
+        # if grade is None:  # 避免无效字段
+        #     grade = 'Null'
+        await handler.changeGrade(grade,s_id,c_id)
 
     # 将结果 模型化并返回
     return Respond()
 
-
+# 管理员修改课程信息
 @app.post("/API/cs/", response_model=Respond)
 async def updCousInfo(cs: List[Course]):
     for item in cs:
-
-        # 初始化 SQL
-        sql = '''
-            UPDATE C
-            SET
-            cname = '%s',
-            credit = '%d',
-            cdept = '%s',
-            tname = '%s'
-            WHERE cno = %s 
-            ''' % (item.cname, item.credit, item.cdept, item.tname, item.cno)
-
-        print(sql)
-
-        # 执行 SQL 并获取结果
-        cursor.execute(sql)
-
+        await handler.changeCourseInfo(item.cname, item.credit, item.cdept, item.tname, item.cno)
     # 将结果 模型化并返回
     return Respond()
 
-
+# 管理员修改学生信息
 @app.post("/API/ss/", response_model=Respond)
 async def updStuInfo(ss: List[Student]):
     for item in ss:
-
         # 初始化 SQL
-        sql = '''
-            UPDATE S
-            SET
-            sname = '%s',
-            sex = '%s',
-            age = '%s',
-            sdept = '%s',
-            logn = '%s'
-            WHERE sno = %s 
-            ''' % (item.sname, item.sex, item.age, item.sdept, item.logn, item.sno)
-
-        # 执行 SQL 并获取结果
-        cursor.execute(sql)
-
+        await handler.changeStuInfo(item.sname, item.sex, item.age, item.sdept, item.logn, item.sno)
     # 将结果 模型化并返回
     return Respond()
+
+if __name__ == '__main__':
+    import uvicorn
+    uvicorn.run("main:app", host="0.0.0.0", port=8000,reload=True)
+    # uvicorn.run(app, host="0.0.0.0", port=9090)

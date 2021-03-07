@@ -1,13 +1,14 @@
-import pymssql
+import pymysql
 from typing import Optional, List
 from pydantic import BaseModel
 
 
 # 获取数据
-conn = pymssql.connect(host="192.168.31.249", user='sa',
-                       password='lin12345678', database='DBforpProject', charset='utf8')
+conn = pymysql.connect(host="127.0.0.1", user='root',
+                        database='dataBase', charset='utf8',cursorclass=pymysql.cursors.DictCursor)
 
-cursor = conn.cursor(as_dict=True)
+# cursor = conn.cursor(as_dict=True)
+cursor = conn.cursor()
 
 
 # 获取 C 表
@@ -24,4 +25,5 @@ rs = cursor.fetchall()
 
 
 # 将数据输出 或者响应给请求
-print((rs))
+for each in rs:
+    print(each)

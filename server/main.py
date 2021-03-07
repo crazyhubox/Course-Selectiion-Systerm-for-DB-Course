@@ -6,7 +6,6 @@ from typing import List
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from model import *
-from components.handler import MyDataBase,Handler
 from components.asyncMysql import AsyncHandler
 
 # 使用数据库初始化一个处理器

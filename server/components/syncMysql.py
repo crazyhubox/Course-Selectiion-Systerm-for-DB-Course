@@ -1,3 +1,4 @@
+from components import Handler
 from typing import Dict, List
 import pymysql
 
@@ -146,10 +147,8 @@ class MyDataBase:
         self.cursor.execute(sql)
         return self.cursor.fetchall()
 
-        
-    
 
-class Handler:
+class SyncHandler(Handler):
 
     def __init__(self,database:MyDataBase) -> None:
         self.db = database
@@ -191,9 +190,10 @@ class Handler:
         return self.db.findStuAndGrade(cno=cno)
         
 if __name__ == '__main__':
-    obj = A()
-    print(obj)
-    print(obj.val)
-    testFUnc(obj)
-    print(obj.val)
+    pass
+    # obj = A()
+    # print(obj)
+    # print(obj.val)
+    # # testFUnc(obj)
+    # print(obj.val)
     

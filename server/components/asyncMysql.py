@@ -1,3 +1,4 @@
+from components import Handler
 import aiomysql
 from aiomysql import Pool,DictCursor
 import asyncio
@@ -5,7 +6,7 @@ import asyncio
 from aiomysql import pool
 
 
-class AsyncHandler:
+class AsyncHandler(Handler):
 
     def __init__(self,host:str='127.0.0.1',port:int=3306,user:str='root',database:str='dataBase',minsize=1,maxsize=10) -> None:
         async def initPool():
